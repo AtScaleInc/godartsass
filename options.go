@@ -112,8 +112,8 @@ type Args struct {
 	// Additional file paths to uses to resolve imports.
 	IncludePaths []string
 
-	sassOutputStyle  embeddedsass.InboundMessage_CompileRequest_OutputStyle
-	sassSourceSyntax embeddedsass.InboundMessage_Syntax
+	sassOutputStyle  embeddedsass.OutputStyle
+	sassSourceSyntax embeddedsass.Syntax
 
 	// Ordered list starting with options.ImportResolver, then IncludePaths.
 	sassImporters []*embeddedsass.InboundMessage_CompileRequest_Importer
@@ -127,18 +127,18 @@ func (args *Args) init(seq uint32, opts Options) error {
 		args.SourceSyntax = SourceSyntaxSCSS
 	}
 
-	v, ok := embeddedsass.InboundMessage_CompileRequest_OutputStyle_value[string(args.OutputStyle)]
+	v, ok := embeddedsass.OutputStyle_value[string(args.OutputStyle)]
 	if !ok {
 		return fmt.Errorf("invalid OutputStyle %q", args.OutputStyle)
 	}
-	args.sassOutputStyle = embeddedsass.InboundMessage_CompileRequest_OutputStyle(v)
+	args.sassOutputStyle = embeddedsass.OutputStyle(v)
 
-	v, ok = embeddedsass.InboundMessage_Syntax_value[string(args.SourceSyntax)]
+	v, ok = embeddedsass.Syntax_value[string(args.SourceSyntax)]
 	if !ok {
 		return fmt.Errorf("invalid SourceSyntax %q", args.SourceSyntax)
 	}
 
-	args.sassSourceSyntax = embeddedsass.InboundMessage_Syntax(v)
+	args.sassSourceSyntax = embeddedsass.Syntax(v)
 
 	if args.ImportResolver != nil {
 		args.sassImporters = []*embeddedsass.InboundMessage_CompileRequest_Importer{
